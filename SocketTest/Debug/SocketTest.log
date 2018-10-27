@@ -1,0 +1,5 @@
+﻿  main.c
+c:\users\user\desktop\src\sockettest\sockettest\main.c(20): warning C4101: 'message': unreferenced local variable
+c:\users\user\desktop\src\sockettest\sockettest\main.c(21): warning C4101: 'recv_size': unreferenced local variable
+c:\users\user\desktop\src\sockettest\sockettest\main.c(20): warning C4101: 'server_reply': unreferenced local variable
+  SocketTest.vcxproj -> C:\Users\user\Desktop\Src\SocketTest\Debug\SocketTest.exe
