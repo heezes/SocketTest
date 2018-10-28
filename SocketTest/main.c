@@ -1,102 +1,110 @@
-#define _WINSOCK_DEPRECATED_NO_WARNINGS
 #define _CRT_SECURE_NO_WARNINGS
+#include "main.h"
+#include "MQTTClient.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
-#include <stdbool.h> 
-#include <stdint.h>
-#include <time.h>
-#include <winsock2.h>
+#define ENDPOINT "iot.eclipse.org"
+#define PORT     1883
 
-#pragma comment(lib,"ws2_32.lib")
+Network N;
+MQTTClient client;
+
+unsigned char send_buf[512];
+unsigned char read_buf[512];
+
+int reconnect(void);
+int publish_msg(char* buf, int len, char* Topic);
+
+void delay(int number_of_seconds)
+{
+	// Converting time into milli_seconds 
+	int milli_seconds = 1000 * number_of_seconds;
+	// Stroing start time 
+	clock_t start_time = clock();
+	// looping till required time is not acheived 
+	while (clock() < start_time + milli_seconds);
+}
+
+void messageArrived(MessageData* md)
+{
+	MQTTMessage* m = md->message;
+	/*
+	 * Data sent in format "immobilised,locked" e.g: "1,0"
+	 */
+	printf("Data: %s\nReceived from Topic: %s\n", (char*)m->payload, (char*)md->topicName);
+}
 
 void main()
 {
-	WSADATA wsa;
-	SOCKET s;
-	struct sockaddr_in server;
-	char *message, server_reply[2000];
-	int recv_size;
-
-	char *hostname = "iot.eclipse.org";
-	char ip[100];
-	struct hostent *he;
-	struct in_addr **addr_list;
-	int i;
-
-	printf("\nInitialising Winsock...");
-	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
+	srand(time(0));
+	NewNetwork(&N);
+	MQTTClientInit(&client, &N, 20000, (unsigned char*)&send_buf, sizeof(send_buf), (unsigned char*)&read_buf, sizeof(read_buf));
+	if (NetworkConnect(&N, ENDPOINT, PORT) == 0)
+		puts("Client Connected");
+	int nowTick = 0,prevTick = 0;
+	Timer my_timer;
+	TimerInit(&my_timer);
+	TimerCountdownMS(&my_timer, 2000);
+	while (1)
 	{
-		printf("Failed. Error Code : %d", WSAGetLastError());
-		goto exit;
+		/*if (TimerIsExpired(&my_timer))
+		{
+			printf("Publishing\n");
+			TimerCountdownMS(&my_timer, 2000);
+		}*/
+		if (!client.isconnected)
+			reconnect();
+		printf("Yield: %d\n", MQTTYield(&client, 10));
+		/*
+		nowTick = GetTickCount();
+		if (nowTick - prevTick > 2500)
+		{
+			prevTick = nowTick;
+			printf("Publishing\n");
+			//publish_msg("Hello", strlen("Hello"), "Altamash");
+		}*/
 	}
+}
 
-	printf("Initialised.\n");
-
-
-	if ((he = gethostbyname(hostname)) == NULL)
+int reconnect(void)
+{
+	MQTTPacket_connectData data = MQTTPacket_connectData_initializer;
+	int rc = 1;
+	data.willFlag = 1;
+	data.MQTTVersion = 4; //3 for 3.1 and 4 for 3.1.1
+	int rand_num = rand();
+	char arr[20];
+	sprintf(arr,"%s-%d", DEVICE_ID, rand_num);
+	data.clientID.cstring = arr;
+	data.keepAliveInterval = KEEP_ALIVE;
+	data.cleansession = 1; //DONE FOR AWS IOT (message broker does not support persistent sessions)
+	char last_will[300];
+	sprintf(last_will, "{\"deviceId\":\"%s-%d\",\"Tick\": %ld}", DEVICE_ID, rand_num, GetTickCount());
+	data.will.message.cstring = (char*)last_will;
+	data.will.qos = 0;
+	data.will.retained = 0;
+	data.will.topicName.cstring = WILL_TOPIC;
+	rc = MQTTConnect(&client, &data);
+	if (rc == SUCCESS)
 	{
-		//gethostbyname failed
-		printf("gethostbyname failed : %d", WSAGetLastError());
-		goto exit;
+		puts("MQTT Connected");
+		delay(2);
+		rc = MQTTSubscribe(&client, SUB_TOPIC, QOS0, messageArrived);
 	}
-
-	//Cast the h_addr_list to in_addr , since h_addr_list also has the ip address in long format only
-	addr_list = (struct in_addr **) he->h_addr_list;
-
-	for (i = 0; addr_list[i] != NULL; i++)
+	else
 	{
-		//Return the first one;
-		strcpy(ip, inet_ntoa(*addr_list[i]));
+		puts("Mqtt Failed");
+		return -1;
 	}
+	return rc;
+}
 
-	printf("%s resolved to : %s\n", hostname, ip);
-
-	//Create a socket
-	if ((s = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET)
-	{
-		printf("Could not create socket : %d", WSAGetLastError());
-		goto exit;
-	}
-	printf("Socket created.\n");
-
-
-	server.sin_addr.s_addr = inet_addr(ip);
-	server.sin_family = AF_INET;
-	server.sin_port = htons(1883);
-
-	//Connect to remote server
-	if (connect(s, (struct sockaddr *)&server, sizeof(server)) < 0)
-	{
-		printf("\nConnect Error: %d\n", WSAGetLastError());
-		goto exit;
-	}
-	puts("Connected");
-	/*
-	//Send some data
-	message = "GET / HTTP/1.1\r\n\r\n";
-	if (send(s, message, strlen(message), 0) < 0)
-	{
-		puts("Send failed");
-		goto exit;
-	}
-	puts("Data Send\n");
-
-	//Receive a reply from the server
-	if ((recv_size = recv(s, server_reply, 2000, 0)) == SOCKET_ERROR)
-	{
-		puts("recv failed");
-		goto exit;
-	}
-
-	puts("Reply received\n");
-	printf("%s\n", server_reply);
-	*/
-	goto finish;
-exit:
-	puts("\r\n------------------------------------Sys Exit------------------------------------\r\n");
-finish:
-	puts("\r\n------------------------------------Task Done------------------------------------\r\n");
+int publish_msg(char* buf, int len, char* Topic)
+{
+	static MQTTMessage pubmsg;
+	pubmsg.payload = buf;
+	pubmsg.payloadlen = len;
+	pubmsg.qos = QOS0;
+	pubmsg.retained = 0;
+	pubmsg.dup = 0;
+	return MQTTPublish(&client, Topic, &pubmsg);
 }

@@ -18,5 +18,76 @@
     <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="iot_platform.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="paho.mqtt.embedded-c\MQTTClient-C\src\MQTTClient.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTConnectClient.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTConnectServer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTDeserializePublish.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTFormat.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTPacket.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTSerializePublish.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTSubscribeClient.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTSubscribeServer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTUnsubscribeClient.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTUnsubscribeServer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="paho.mqtt.embedded-c\MQTTClient-C\src\MQTTClient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTConnect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTFormat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTPacket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTPublish.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTSubscribe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTUnsubscribe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="paho.mqtt.embedded-c\MQTTPacket\src\StackTrace.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="iot_platform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

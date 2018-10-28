@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{E975FFC9-66AA-48D3-B489-AB70CD02A90B}</ProjectGuid>
     <RootNamespace>SocketTest</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -76,6 +76,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\Heeze\Desktop\SocketTest\SocketTest\paho.mqtt.embedded-c\MQTTClient-C\src;C:\Users\Heeze\Desktop\SocketTest\SocketTest\paho.mqtt.embedded-c\MQTTPacket\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -118,7 +119,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="iot_platform.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="paho.mqtt.embedded-c\MQTTClient-C\src\MQTTClient.c" />
+    <ClCompile Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTConnectClient.c" />
+    <ClCompile Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTConnectServer.c" />
+    <ClCompile Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTDeserializePublish.c" />
+    <ClCompile Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTFormat.c" />
+    <ClCompile Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTPacket.c" />
+    <ClCompile Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTSerializePublish.c" />
+    <ClCompile Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTSubscribeClient.c" />
+    <ClCompile Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTSubscribeServer.c" />
+    <ClCompile Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTUnsubscribeClient.c" />
+    <ClCompile Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTUnsubscribeServer.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="iot_platform.h" />
+    <ClInclude Include="main.h" />
+    <ClInclude Include="paho.mqtt.embedded-c\MQTTClient-C\src\MQTTClient.h" />
+    <ClInclude Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTConnect.h" />
+    <ClInclude Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTFormat.h" />
+    <ClInclude Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTPacket.h" />
+    <ClInclude Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTPublish.h" />
+    <ClInclude Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTSubscribe.h" />
+    <ClInclude Include="paho.mqtt.embedded-c\MQTTPacket\src\MQTTUnsubscribe.h" />
+    <ClInclude Include="paho.mqtt.embedded-c\MQTTPacket\src\StackTrace.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
