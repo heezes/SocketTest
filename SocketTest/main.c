@@ -30,7 +30,7 @@ void messageArrived(MessageData* md)
 	/*
 	 * Data sent in format "immobilised,locked" e.g: "1,0"
 	 */
-	printf("Data: %s\nReceived from Topic: %s\n", (char*)m->payload, (char*)md->topicName);
+	printf("Data: %s\nReceived from Topic: %.*s\n", (char*)m->payload, md->topicName->lenstring.len, md->topicName->lenstring.data);
 }
 
 void main()
@@ -41,27 +41,17 @@ void main()
 	if (NetworkConnect(&N, ENDPOINT, PORT) == 0)
 		puts("Client Connected");
 	int nowTick = 0,prevTick = 0;
-	Timer my_timer;
-	TimerInit(&my_timer);
-	TimerCountdownMS(&my_timer, 2000);
 	while (1)
 	{
-		/*if (TimerIsExpired(&my_timer))
-		{
-			printf("Publishing\n");
-			TimerCountdownMS(&my_timer, 2000);
-		}*/
 		if (!client.isconnected)
 			reconnect();
-		printf("Yield: %d\n", MQTTYield(&client, 10));
-		/*
+		MQTTYield(&client, 10);
 		nowTick = GetTickCount();
 		if (nowTick - prevTick > 2500)
 		{
 			prevTick = nowTick;
-			printf("Publishing\n");
-			//publish_msg("Hello", strlen("Hello"), "Altamash");
-		}*/
+			publish_msg("Hello", strlen("Hello"), "Altamash");
+		}
 	}
 }
 

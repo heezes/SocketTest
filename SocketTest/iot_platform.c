@@ -45,12 +45,14 @@ void TimerInit(Timer* timer) {
 int read(Network* n, unsigned char* buffer, int len, int timeout_ms)
 {
 	int recv_size = 0;
-	printf("return: %d\n",setsockopt(n->my_socket,SOL_SOCKET,SO_RCVTIMEO,(char*)&timeout_ms,sizeof(timeout_ms)));
+	setsockopt(n->my_socket,SOL_SOCKET,SO_RCVTIMEO,(char*)&timeout_ms,sizeof(timeout_ms));
 	recv_size = recv(n->my_socket, buffer, len, 0);
 	if (recv_size == SOCKET_ERROR || recv_size == 0)
 	{
-		printf("\nReceive Error: %d\n", WSAGetLastError());
-		return recv_size;
+		int ret = WSAGetLastError();
+		if(ret!=10060)
+			printf("\nReceive Error: %d\n", ret);
+		return 0;
 	}
 	return recv_size;
 }

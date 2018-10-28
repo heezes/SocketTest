@@ -1,2 +1,3 @@
-﻿  iot_platform.c
+﻿  main.c
+c:\users\heeze\desktop\sockettest\sockettest\main.c(38): warning C4244: 'function': conversion from 'time_t' to 'unsigned int', possible loss of data
   SocketTest.vcxproj -> C:\Users\Heeze\Desktop\SocketTest\Debug\SocketTest.exe
